@@ -1,0 +1,34 @@
+
+import 'dotenv/config';
+import { z } from 'zod';
+
+const envSchema = z.object({
+  PORT: z.coerce.number().int().positive().default(5000),
+
+  CLIENT_URL: z
+    .string()
+    .url()
+    .default('http://localhost:3000'),
+
+  MONGODB_URI: z
+    .string()
+    .min(1, 'MONGODB_URI is required'),
+
+  DB_NAME: z
+    .string()
+    .min(1)
+    .default('salonbook'),
+});
+
+const result = envSchema.safeParse(process.env);
+
+if (!result.success) {
+  console.error(
+    'Environment validation failed:',
+    result.error.flatten().fieldErrors
+  );
+
+  throw new Error('Invalid server environment configuration');
+}
+
+export const env = result.data;

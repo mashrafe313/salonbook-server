@@ -1,25 +1,22 @@
 
-import 'dotenv/config';
-
-import express from 'express';
+import express, { type ErrorRequestHandler } from 'express';
 import cors from 'cors';
+
+import { connectDB } from './config/db';
+import { env } from './config/env';
 
 const app = express();
 
-const PORT = Number(process.env.PORT || 5000);
-const CLIENT_URL =
-  process.env.CLIENT_URL || 'http://localhost:3000';
-
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: env.CLIENT_URL,
     credentials: true,
   })
 );
 
 app.use(express.json({ limit: '1mb' }));
 
-// API health check
+// Basic API health check
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
     success: true,
@@ -27,6 +24,58 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`SalonBook server running on port ${PORT}`);
+// Database health check
+app.get('/api/health/db', async (_req, res) => {
+  try {
+    const db = await connectDB();
+
+    await db.command({ ping: 1 });
+
+    res.status(200).json({
+      success: true,
+      message: 'MongoDB connection is working',
+    });
+  } catch (error) {
+    console.error('Database health check failed:', error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+    });
+  }
 });
+
+// Global error handler
+const errorHandler: ErrorRequestHandler = (
+  error,
+  _req,
+  res,
+  _next
+) => {
+  console.error('Server error:', error);
+
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+  });
+};
+
+app.use(errorHandler);
+
+// Start server after connecting to MongoDB
+async function startServer() {
+  try {
+    await connectDB();
+
+    app.listen(env.PORT, () => {
+      console.log(
+        `SalonBook server running at http://localhost:${env.PORT}`
+      );
+    });
+  } catch (error) {
+    console.error('Failed to start SalonBook server:', error);
+    process.exit(1);
+  }
+}
+
+void startServer();
