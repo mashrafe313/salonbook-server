@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import { connectDB } from './config/db';
 import { env } from './config/env';
+import serviceRoutes from './routes/service.routes';
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(
 );
 
 app.use(express.json({ limit: '1mb' }));
-
+app.use('/api/services', serviceRoutes);
 // Basic API health check
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
