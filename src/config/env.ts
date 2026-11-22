@@ -5,19 +5,13 @@ import { z } from 'zod';
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(5000),
 
-  CLIENT_URL: z
-    .string()
-    .url()
-    .default('http://localhost:3000'),
+  CLIENT_URL: z.string().url().default('http://localhost:3000'),
 
-  MONGODB_URI: z
-    .string()
-    .min(1, 'MONGODB_URI is required'),
+  AUTH_BASE_URL: z.string().url(),
 
-  DB_NAME: z
-    .string()
-    .min(1)
-    .default('salonbook'),
+  MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
+
+  DB_NAME: z.string().min(1).default('salonbook'),
 });
 
 const result = envSchema.safeParse(process.env);

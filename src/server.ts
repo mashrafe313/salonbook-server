@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import { connectDB } from './config/db';
 import { env } from './config/env';
+import authRoutes from './routes/auth.routes';
 import serviceRoutes from './routes/service.routes';
 
 const app = express();
@@ -16,7 +17,11 @@ app.use(
 );
 
 app.use(express.json({ limit: '1mb' }));
+
+// Register API routes
+app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
+
 // Basic API health check
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
@@ -29,7 +34,6 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/health/db', async (_req, res) => {
   try {
     const db = await connectDB();
-
     await db.command({ ping: 1 });
 
     res.status(200).json({
