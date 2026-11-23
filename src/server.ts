@@ -11,6 +11,7 @@ import appointmentRoutes from './routes/appointment.routes';
 import userRoutes from './routes/users.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 import transactionRoutes from './routes/transaction.routes';
+import uploadRoutes from './routes/upload.routes';
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 // Basic API health check
 app.get('/api/health', (_req, res) => {

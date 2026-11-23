@@ -12,6 +12,7 @@ const envSchema = z.object({
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
 
   DB_NAME: z.string().min(1).default('salonbook'),
+  IMGBB_API_KEY: z.string().optional(),
 });
 
 const result = envSchema.safeParse(process.env);
