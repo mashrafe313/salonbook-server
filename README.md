@@ -1,8 +1,6 @@
-
 # SalonBook - Server
 
-SalonBook Server provides REST APIs for the
-SalonBook salon appointment booking platform.
+SalonBook Server is the backend REST API for the SalonBook salon appointment booking platform. It handles authentication, authorization, service management, appointment management, user management, image uploads, and transaction records.
 
 ## Technology Stack
 
@@ -10,53 +8,56 @@ SalonBook salon appointment booking platform.
 - Express.js
 - TypeScript
 - MongoDB
-- JWT Authentication
 - Better Auth
-- Stripe
+- JWT Authentication and Authorization
 - ImgBB
+- REST API
 
 ## Main Features
 
-- REST API
+- RESTful API architecture
 - Authentication and authorization
-- Role-based access control
-- Service management
-- Appointment management
+- Server-side role-based access control
+- Service creation, updating, deletion, and status management
+- Appointment booking and management
+- Appointment status updates
 - Customer management
-- Stripe payment processing
-- Verified Stripe webhook handling
-- Image upload integration
+- User blocking and unblocking
+- Dashboard statistics
+- Transaction management
+- Demo payment processing (simulated transactions only)
+- Authenticated image upload using ImgBB
 - Request validation and error handling
+- Protected API routes
+
+**Payment Note:** The current implementation uses a demo payment workflow. It records simulated transactions and does not process real payments. Stripe Checkout Session creation and verified Stripe webhook handling are not yet implemented.
 
 ## Environment Variables
 
-- PORT
-- CLIENT_URL
-- MONGODB_URI
-- DB_NAME
-- BETTER_AUTH_SECRET
-- STRIPE_SECRET_KEY
-- STRIPE_WEBHOOK_SECRET
-- IMGBB_API_KEY
+Create a `.env` file in the server project root:
+
+```env
+PORT=
+CLIENT_URL=
+MONGODB_URI=
+DB_NAME=
+BETTER_AUTH_SECRET=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+IMGBB_API_KEY=
+```
+
+Never commit `.env` files or secret credentials to GitHub.
 
 ## Installation
 
-npm install
+Clone the repository:
 
-## Run Locally
+```bash
+git clone https://github.com/Mashrafe313/salonbook-server.git
+```
 
-npm run dev
+Navigate to the project directory:
 
-## Build
-
-npm run build
-
-## Live API
-
-To be added after deployment.
-
-## Repositories
-
-Client: https://github.com/Mashrafe313/salonbook-client
-
-Server: https://github.com/Mashrafe313/salonbook-server
+```bash
+cd
