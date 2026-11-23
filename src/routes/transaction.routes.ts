@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import {
   createDemoPayment,
+  createStripeCheckout,
   getAllTransactions,
 } from '../controllers/transaction.controller';
 
@@ -14,8 +15,9 @@ const router = Router();
 
 router.use(authenticate);
 
-// Customer demo payment
+// Customer payment routes
 router.post('/demo', asyncHandler(createDemoPayment));
+router.post('/checkout', asyncHandler(createStripeCheckout));
 
 // Admin transaction history
 router.get(

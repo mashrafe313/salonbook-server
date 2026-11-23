@@ -6,6 +6,9 @@ let client: MongoClient | undefined;
 let database: Db | undefined;
 let connectionPromise: Promise<Db> | undefined;
 
+
+
+
 async function createIndexes(db: Db) {
   // Services
   await db.collection('services').createIndex({
@@ -47,7 +50,19 @@ async function createIndexes(db: Db) {
     customerId: 1,
     createdAt: -1,
   });
+
+await db.collection('transactions').createIndex(
+  { stripeSessionId: 1 },
+  {
+    unique: true,
+    sparse: true,
+    name: 'unique_stripe_session',
+  }
+);
+
 }
+
+
 
 export async function connectDB(): Promise<Db> {
   if (database) {

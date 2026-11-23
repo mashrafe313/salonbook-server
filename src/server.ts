@@ -12,6 +12,8 @@ import userRoutes from './routes/users.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 import transactionRoutes from './routes/transaction.routes';
 import uploadRoutes from './routes/upload.routes';
+import { stripeWebhook } from './controllers/transaction.controller';
+import { asyncHandler } from './utils/asyncHandler';
 
 const app = express();
 
@@ -22,7 +24,12 @@ app.use(
     credentials: true,
   })
 );
-
+// Stripe webhook must receive the raw request body.
+app.post(
+  '/api/transactions/webhook',
+  express.raw({ type: 'application/json' }),
+  asyncHandler(stripeWebhook)
+);
 // Parse JSON requests
 app.use(express.json({ limit: '1mb' }));
 

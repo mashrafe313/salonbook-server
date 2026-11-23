@@ -12,7 +12,12 @@ const envSchema = z.object({
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
 
   DB_NAME: z.string().min(1).default('salonbook'),
+
   IMGBB_API_KEY: z.string().optional(),
+
+  // Stripe credentials are optional during development.
+  STRIPE_SECRET_KEY: z.string().optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().optional(),
 });
 
 const result = envSchema.safeParse(process.env);
