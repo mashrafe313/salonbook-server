@@ -147,6 +147,7 @@ export async function createDemoPayment(
   }
 }
 
+
 // GET /api/transactions (admin only)
 export async function getAllTransactions(
   _req: Request,
@@ -160,8 +161,42 @@ export async function getAllTransactions(
     .sort({ createdAt: -1 })
     .toArray();
 
+  const appointmentIds = transactions.map(
+    (transaction) => transaction.appointmentId
+  );
+
+  const appointments = await db
+    .collection<AppointmentDocument>('appointments')
+    .find({
+      _id: { $in: appointmentIds },
+    })
+    .toArray();
+
+  const appointmentMap = new Map(
+    appointments.map((appointment) => [
+      appointment._id!.toHexString(),
+      appointment,
+    ])
+  );
+
+  const enrichedTransactions = transactions.map(
+    (transaction) => {
+      const appointment = appointmentMap.get(
+        transaction.appointmentId.toHexString()
+      );
+
+      return {
+        ...transaction,
+        serviceName: appointment?.serviceName ?? 'Unknown service',
+        appointmentDate: appointment?.appointmentDate ?? null,
+        timeSlot: appointment?.timeSlot ?? null,
+        customerName: appointment?.customerName ?? 'Unknown customer',
+      };
+    }
+  );
+
   return res.status(200).json({
     success: true,
-    data: transactions,
+    data: enrichedTransactions,
   });
 }
