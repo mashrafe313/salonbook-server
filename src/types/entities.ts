@@ -12,6 +12,8 @@ export type PaymentStatus = 'unpaid' | 'paid';
 
 export type TransactionStatus = 'paid' | 'failed';
 
+export type PaymentProvider = 'demo' | 'stripe';
+
 export interface ServiceDocument {
   _id?: ObjectId;
   serviceName: string;
@@ -47,7 +49,9 @@ export interface TransactionDocument {
   customerId: string;
   amount: number;
   currency: string;
-  stripeSessionId: string;
+  paymentProvider: PaymentProvider;
+  transactionReference: string;
+  stripeSessionId?: string;
   status: TransactionStatus;
   createdAt: Date;
 }

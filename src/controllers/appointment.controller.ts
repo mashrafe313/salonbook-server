@@ -79,12 +79,19 @@ export async function createAppointment(
 
   const user = req.authUser;
 
-  if (!user) {
-    return res.status(401).json({
-      success: false,
-      message: 'Authentication required',
-    });
-  }
+if (!user) {
+  return res.status(401).json({
+    success: false,
+    message: 'Authentication required',
+  });
+}
+
+if (user.role !== 'customer') {
+  return res.status(403).json({
+    success: false,
+    message: 'Only customers can create appointments',
+  });
+}
 
   const activeSlotKey = `${appointmentDate}_${timeSlot}`;
 
