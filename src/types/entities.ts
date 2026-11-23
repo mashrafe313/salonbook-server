@@ -27,13 +27,17 @@ export interface ServiceDocument {
 export interface AppointmentDocument {
   _id?: ObjectId;
   serviceId: ObjectId;
+  serviceName: string;
   customerId: string;
+  customerName: string;
+  customerEmail: string;
   appointmentDate: string;
   timeSlot: string;
   message?: string;
   servicePrice: number;
   paymentStatus: PaymentStatus;
   status: AppointmentStatus;
+  activeSlotKey?: string;
   createdAt: Date;
 }
 

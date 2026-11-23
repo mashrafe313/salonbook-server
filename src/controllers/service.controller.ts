@@ -228,3 +228,20 @@ export async function deleteService(req: Request, res: Response) {
     message: 'Service deactivated successfully',
   });
 }
+// GET /api/services/admin
+// Admin-only: retrieve all services, including inactive ones.
+export async function getAdminServices(_req: Request, res: Response) {
+  const db = await connectDB();
+
+  const services = await db
+    .collection<ServiceDocument>('services')
+    .find({})
+    .sort({ createdAt: -1 })
+    .toArray();
+
+  return res.status(200).json({
+    success: true,
+    message: 'All services retrieved successfully',
+    data: services,
+  });
+}

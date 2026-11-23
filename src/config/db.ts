@@ -29,6 +29,15 @@ async function createIndexes(db: Db) {
     timeSlot: 1,
   });
 
+  await db.collection('appointments').createIndex(
+  { activeSlotKey: 1 },
+  {
+    unique: true,
+    sparse: true,
+    name: 'unique_active_appointment_slot',
+  }
+);
+
   // Transactions
   await db.collection('transactions').createIndex({
     appointmentId: 1,

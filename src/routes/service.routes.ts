@@ -4,6 +4,7 @@ import { Router } from 'express';
 import {
   getServices,
   getServiceById,
+  getAdminServices,
   createService,
   updateService,
   deleteService,
@@ -14,6 +15,15 @@ import { authenticate } from '../middleware/authenticate';
 import { requireAdmin } from '../middleware/requireAdmin';
 
 const router = Router();
+
+// Admin-only: all services, including inactive services.
+// Keep this route before /:id.
+router.get(
+  '/admin',
+  authenticate,
+  requireAdmin,
+  asyncHandler(getAdminServices)
+);
 
 // Public routes
 router.get('/', asyncHandler(getServices));

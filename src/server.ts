@@ -4,11 +4,15 @@ import cors from 'cors';
 
 import { connectDB } from './config/db';
 import { env } from './config/env';
+
 import authRoutes from './routes/auth.routes';
 import serviceRoutes from './routes/service.routes';
+import appointmentRoutes from './routes/appointment.routes';
+import userRoutes from './routes/users.routes';
 
 const app = express();
 
+// CORS configuration
 app.use(
   cors({
     origin: env.CLIENT_URL,
@@ -16,11 +20,14 @@ app.use(
   })
 );
 
+// Parse JSON requests
 app.use(express.json({ limit: '1mb' }));
 
 // Register API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/appointments', appointmentRoutes);
+app.use('/api/users', userRoutes);
 
 // Basic API health check
 app.get('/api/health', (_req, res) => {
